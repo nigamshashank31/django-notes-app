@@ -2,20 +2,20 @@ FROM python:3.9
 
 WORKDIR /app/backend
 
-COPY requirements.txt /app/backend
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
     && rm -rf /var/lib/apt/lists/*
+# First copy requirements.txt explicitly to leverage build cache
+COPY requirements.txt .
 
+# Now install dependencies 
 
-# Install app dependencies
-#RUN pip install mysqlclient
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy rest of the app code
 COPY . /app/backend
 
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--noreload"] 
-#RUN python manage.py migrate
-#RUN python manage.py makemigrations
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn notesapp.wsgi --bind 0.0.0.0:8000"] 
+
