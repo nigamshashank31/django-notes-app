@@ -19,3 +19,4 @@ COPY . /app/backend
 EXPOSE 8000
 CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn notesapp.wsgi --bind 0.0.0.0:8000"] 
 
+# Test the Code
