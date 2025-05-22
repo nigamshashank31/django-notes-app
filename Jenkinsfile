@@ -37,7 +37,7 @@ pipeline{
     stage("Push to Docker Hub"){
         steps {
             script {
-                docker_push("django_app","dockerHubUser","dockerHubPass")
+                docker_push("django_app","latest","nigamshashank4")
             }
         }
     }
@@ -74,4 +74,4 @@ post {
         }
     }
 }
-
+}
