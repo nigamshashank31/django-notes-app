@@ -36,14 +36,8 @@ pipeline{
     }  
     stage("Push to Docker Hub"){
         steps {
-            echo 'Pushing Docker image to Docker Hub'
-            withCredentials([usernamePassword(
-                credentialsId: 'dockerHubCred', 
-                usernameVariable: 'dockerHubUser', 
-                passwordVariable: 'dockerHubPass')]){
-            sh """docker login -u $dockerHubUser -p $dockerHubPass"""
-            sh """docker image tag django_app $dockerHubUser/django_app"""
-            sh """docker push $dockerHubUser/django_app"""
+            script {
+                docker_push()
             }
         }
     }
